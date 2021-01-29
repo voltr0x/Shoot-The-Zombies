@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
         //To aim the player
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        playerAnim.SetFloat("Speed", verticalInput);
+
         //FaceMouse();
 
         //transform.LookAt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
