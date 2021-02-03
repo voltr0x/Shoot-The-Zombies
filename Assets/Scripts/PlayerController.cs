@@ -34,9 +34,9 @@ public class PlayerController : MonoBehaviour
 
         //Start animation if player is moving
         if (isMoving)
-            playerAnim.SetFloat("Speed", 1);
+            playerAnim.SetFloat("Speed", 1f);
         else
-            playerAnim.SetFloat("Speed", 0);
+            playerAnim.SetFloat("Speed", 0f);
 
         //Aim player
         FaceMouse();
