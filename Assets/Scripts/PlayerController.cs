@@ -13,8 +13,11 @@ public class PlayerController : MonoBehaviour
     private float verticalInput;
 
     Plane plane;
+    float speed = 0.08f;
 
-    [SerializeField] private float speed = 0.08f;
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    float bulletForce = 30f;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +43,9 @@ public class PlayerController : MonoBehaviour
 
         //Aim player
         FaceMouse();
+
+        if (Input.GetButtonDown("Fire1"))
+            Shoot();
     }
 
     private void FixedUpdate()
@@ -88,5 +94,12 @@ public class PlayerController : MonoBehaviour
             var playerPositionOnPlane = plane.ClosestPointOnPlane(transform.position);
             transform.rotation = Quaternion.LookRotation(hitPoint - playerPositionOnPlane);
         }
+    }
+
+    void Shoot()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        rb.AddForce(firePoint.up * bulletForce, ForceMode.Impulse);
     }
 }
