@@ -5,48 +5,54 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-    public Transform player;
+    public Transform playerTransform;
     bool isPlayerAlive;
     bool isPlayerClose;
     float distance;
 
     public NavMeshAgent nav;
     Animator enemyAnim;
-    
+
+    int health = 30;
+    float damageRate = 0.2f;
+
+    PlayerController player;
+    public GameObject playerPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
-        isPlayerAlive = true;
         isPlayerClose = false;
-
         enemyAnim = GetComponent<Animator>();
+        player = playerPrefab.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        distance = Vector3.Distance(player.position, transform.position);
-        Debug.Log(distance);
-
+        isPlayerAlive = player.isAlive;
+        
+        distance = Vector3.Distance(playerTransform.position, transform.position);
         isPlayerClose = distance <= 6f;
 
         if (isPlayerAlive && isPlayerClose)
         {
             nav.enabled = true;
-            nav.SetDestination(player.position);
-            transform.LookAt(player);
+            nav.SetDestination(playerTransform.position);
+            transform.LookAt(playerTransform);
 
             if (distance > 1.1f)
             {
                 enemyAnim.SetBool("isChasing", true);
                 enemyAnim.SetBool("isAttacking", false);
-                Debug.Log("Start attack animation");
             }
             else
             {
                 enemyAnim.SetBool("isAttacking", true);
                 enemyAnim.SetBool("isChasing", false);
-                Debug.Log("Stop attack animation");
+
+                //Deal damage to player
+                player.TakeDamage(damageRate);
             }
         }
         else
@@ -54,6 +60,19 @@ public class EnemyController : MonoBehaviour
             nav.enabled = false;
             enemyAnim.SetBool("isChasing", false);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+            Die();
+    }
+
+    void Die()
+    {
+        //TO-DO: Death animation
+        Destroy(gameObject);
     }
 }
     

@@ -19,11 +19,15 @@ public class PlayerController : MonoBehaviour
     public Transform firePoint;
     float bulletForce = 30f;
 
+    private float health = 100f;
+    public bool isAlive;
+
     // Start is called before the first frame update
     void Start()
     {
         playerAnim = GetComponent<Animator>();
         plane = new Plane(Vector3.up, Vector3.zero);
+        isAlive = true;
         isMoving = false;
         lastPosition = transform.position;
     }
@@ -46,6 +50,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
             Shoot();
+
+        Debug.Log("Player Health: " + health);
     }
 
     private void FixedUpdate()
@@ -101,5 +107,18 @@ public class PlayerController : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(firePoint.up * bulletForce, ForceMode.Impulse);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+            Die();
+    }
+    void Die()
+    {
+        //TO-DO: Death animation & Game over screen
+        isAlive = false;
+        Debug.Log("GAME OVER!");
     }
 }
