@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class EnemyActiveController : MonoBehaviour
 {
     public Transform playerTransform;
     bool isPlayerAlive;
-    bool isPlayerClose;
     float distance;
 
     public NavMeshAgent nav;
     Animator enemyAnim;
 
-    int health = 60;
+    int health = 30;
     float damageRate = 0.2f;
 
     PlayerController player;
@@ -22,7 +21,6 @@ public class EnemyController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isPlayerClose = false;
         enemyAnim = GetComponent<Animator>();
         player = playerPrefab.GetComponent<PlayerController>();
     }
@@ -33,9 +31,8 @@ public class EnemyController : MonoBehaviour
         isPlayerAlive = player.isAlive;
         
         distance = Vector3.Distance(playerTransform.position, transform.position);
-        isPlayerClose = distance <= 6f;
 
-        if (isPlayerAlive && isPlayerClose)
+        if (isPlayerAlive)
         {
             nav.enabled = true;
             nav.SetDestination(playerTransform.position);

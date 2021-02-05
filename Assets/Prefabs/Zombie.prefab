@@ -1114,10 +1114,10 @@ GameObject:
   - component: {fileID: 7209840667072410548}
   - component: {fileID: 9167699489226441604}
   - component: {fileID: 1504549899}
-  - component: {fileID: 1504549900}
+  - component: {fileID: 2251491712865597561}
   m_Layer: 0
   m_Name: Zombie
-  m_TagString: Enemy
+  m_TagString: EnemyActive
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1193,7 +1193,7 @@ NavMeshAgent:
   m_BaseOffset: 0.6
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1504549900
+--- !u!114 &2251491712865597561
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1202,11 +1202,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7552279506323679799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97026634e8574994584f5da76887fcfc, type: 3}
+  m_Script: {fileID: 11500000, guid: a3f750bb8cebe4844b24f410c01c6b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
   nav: {fileID: 1504549899}
+  playerPrefab: {fileID: 0}
 --- !u!1 &7558688222239105533
 GameObject:
   m_ObjectHideFlags: 0

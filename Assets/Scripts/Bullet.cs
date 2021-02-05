@@ -11,10 +11,16 @@ public class Bullet : MonoBehaviour
         {
             EnemyController enemy = other.GetComponent<EnemyController>();
             if (enemy != null)
-            {
                 enemy.TakeDamage(damage);
-            }
         }
+
+        if (other.CompareTag("EnemyActive"))
+        {
+            EnemyActiveController enemyActive = other.GetComponent<EnemyActiveController>();
+            if(enemyActive != null)
+                enemyActive.TakeDamage(damage);
+        }
+
         Destroy(gameObject);
     }
 
