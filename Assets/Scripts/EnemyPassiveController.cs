@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class EnemyPassiveController : MonoBehaviour
 {
-    public Transform playerTransform;
     bool isPlayerAlive;
     bool isPlayerClose;
     float distance;
@@ -17,14 +16,13 @@ public class EnemyController : MonoBehaviour
     float damageRate = 0.2f;
 
     PlayerController player;
-    public GameObject playerPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
         isPlayerClose = false;
         enemyAnim = GetComponent<Animator>();
-        player = playerPrefab.GetComponent<PlayerController>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -32,14 +30,14 @@ public class EnemyController : MonoBehaviour
     {
         isPlayerAlive = player.isAlive;
         
-        distance = Vector3.Distance(playerTransform.position, transform.position);
-        isPlayerClose = distance <= 6f;
+        distance = Vector3.Distance(player.transform.position, transform.position);
+        isPlayerClose = distance <= 10f;
 
         if (isPlayerAlive && isPlayerClose)
         {
             nav.enabled = true;
-            nav.SetDestination(playerTransform.position);
-            transform.LookAt(playerTransform);
+            nav.SetDestination(player.transform.position);
+            transform.LookAt(player.transform);
 
             if (distance > 1.1f)
             {

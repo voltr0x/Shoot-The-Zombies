@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyActiveController : MonoBehaviour
 {
-    public Transform playerTransform;
     bool isPlayerAlive;
     float distance;
 
@@ -16,13 +15,12 @@ public class EnemyActiveController : MonoBehaviour
     float damageRate = 0.2f;
 
     PlayerController player;
-    public GameObject playerPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
         enemyAnim = GetComponent<Animator>();
-        player = playerPrefab.GetComponent<PlayerController>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -30,13 +28,13 @@ public class EnemyActiveController : MonoBehaviour
     {
         isPlayerAlive = player.isAlive;
         
-        distance = Vector3.Distance(playerTransform.position, transform.position);
+        distance = Vector3.Distance(player.transform.position, transform.position);
 
         if (isPlayerAlive)
         {
             nav.enabled = true;
-            nav.SetDestination(playerTransform.position);
-            transform.LookAt(playerTransform);
+            nav.SetDestination(player.transform.position);
+            transform.LookAt(player.transform);
 
             if (distance > 1.1f)
             {

@@ -774,8 +774,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.42083532, y: 1.708809, z: 0.6528597}
-  m_Center: {x: -0.0046938956, y: 0.0832234, z: 0.14384031}
+  m_Size: {x: 0.42083532, y: 1.7093258, z: 0.6657543}
+  m_Center: {x: -0.0046938956, y: 0.08348179, z: 0.03963852}
 --- !u!95 &3811644476876584426
 Animator:
   serializedVersion: 3
@@ -807,7 +807,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4a5bf3fb736e54439614a4453dfd3a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  health: 0
+  ammo: 0
+  isAlive: 0
 --- !u!195 &1144920071
 NavMeshAgent:
   m_ObjectHideFlags: 0

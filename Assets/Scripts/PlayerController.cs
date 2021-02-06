@@ -19,7 +19,11 @@ public class PlayerController : MonoBehaviour
     public Transform firePoint;
     float bulletForce = 30f;
 
-    private float health = 100f;
+    public float maxHealth = 100f;
+    public float currentHealth;
+    public GameManager gameManager;
+    public int ammo;
+
     public bool isAlive;
 
     // Start is called before the first frame update
@@ -30,28 +34,36 @@ public class PlayerController : MonoBehaviour
         isAlive = true;
         isMoving = false;
         lastPosition = transform.position;
+
+        currentHealth = maxHealth;
+        gameManager.SetMaxHealth(maxHealth);
+        ammo = 60;
+        gameManager.SetAmmoCount(ammo);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Get input
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        if (isAlive)
+        {
+            //Get input
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
 
-        //Start animation if player is moving
-        if (isMoving)
-            playerAnim.SetFloat("Speed", 1f);
-        else
-            playerAnim.SetFloat("Speed", 0f);
+            //Start animation if player is moving
+            if (isMoving)
+                playerAnim.SetFloat("Speed", 1f);
+            else
+                playerAnim.SetFloat("Speed", 0f);
 
-        //Aim player
-        FaceMouse();
+            //Aim player
+            FaceMouse();
 
-        if (Input.GetButtonDown("Fire1"))
-            Shoot();
-
-        Debug.Log("Player Health: " + health);
+            if (Input.GetButtonDown("Fire1") && ammo > 0)
+                Shoot();
+            else
+                Debug.Log("Reload!");
+        }
     }
 
     private void FixedUpdate()
@@ -107,18 +119,39 @@ public class PlayerController : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(firePoint.up * bulletForce, ForceMode.Impulse);
+        ammo--;
+        gameManager.SetAmmoCount(ammo);
     }
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        if (health <= 0)
+        currentHealth -= damage;
+        gameManager.SetHealth(currentHealth);
+        if (currentHealth <= 0)
             Die();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Ammo"))
+        {
+            ammo += 40;
+            gameManager.SetAmmoCount(ammo);
+            Destroy(other.gameObject);
+        }
+        if (other.CompareTag("Health"))
+        {
+            currentHealth += 20f;
+            if(currentHealth > maxHealth)
+                currentHealth = maxHealth;
+            gameManager.SetHealth(currentHealth);
+            Destroy(other.gameObject);
+        }
+    }
+
     void Die()
     {
         //TO-DO: Death animation & Game over screen
         isAlive = false;
-        Debug.Log("GAME OVER!");
     }
 }

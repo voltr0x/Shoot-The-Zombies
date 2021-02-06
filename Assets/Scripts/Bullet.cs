@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            EnemyController enemy = other.GetComponent<EnemyController>();
+            EnemyPassiveController enemy = other.GetComponent<EnemyPassiveController>();
             if (enemy != null)
                 enemy.TakeDamage(damage);
         }

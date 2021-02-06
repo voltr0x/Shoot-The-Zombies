@@ -1207,7 +1207,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 0}
   nav: {fileID: 1504549899}
-  playerPrefab: {fileID: 0}
 --- !u!1 &7558688222239105533
 GameObject:
   m_ObjectHideFlags: 0
