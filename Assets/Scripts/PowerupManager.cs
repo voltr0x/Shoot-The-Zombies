@@ -53,7 +53,6 @@ public class PowerupManager : MonoBehaviour
         Vector3 point;
         if (RandomPoint(transform.position, range, out point))
         {
-            //Instantiate health
             Instantiate(health, point + offset, transform.rotation);
         }
     }
@@ -63,7 +62,6 @@ public class PowerupManager : MonoBehaviour
         Vector3 point;
         if (RandomPoint(transform.position, range, out point))
         {
-            //Instantiate ammo
             Instantiate(ammo, point + offset, transform.rotation);
         }
     }

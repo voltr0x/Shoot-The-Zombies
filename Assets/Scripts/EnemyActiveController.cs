@@ -6,15 +6,14 @@ using UnityEngine.AI;
 public class EnemyActiveController : MonoBehaviour
 {
     bool isPlayerAlive;
+    PlayerController player;
+    
     float distance;
-
     public NavMeshAgent nav;
     Animator enemyAnim;
 
     int health = 30;
     float damageRate = 0.2f;
-
-    PlayerController player;
 
     // Start is called before the first frame update
     void Start()

@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
             gm = this.gameObject.GetComponent<GameManager>();
 
         player = GameObject.Find("Player").GetComponent<PlayerController>();
+
+        Cursor.visible = false;
     }
 
     void Update()
@@ -71,7 +73,10 @@ public class GameManager : MonoBehaviour
 
     public void SetAmmoCount(int count)
     {
-        ammoCount.text = count.ToString();
+        if (count > 0)
+            ammoCount.text = count.ToString();
+        else
+            ammoCount.text = "Reload!";
     }
 
     public void SetWaveCount(int wave)
@@ -85,6 +90,7 @@ public class GameManager : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         pauseGame = true;
+        Cursor.visible = true;
     }
 
     public void ResumeGame()
@@ -92,6 +98,7 @@ public class GameManager : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         pauseGame = false;
+        Cursor.visible = false;
     }
 
     public void RestartGame()

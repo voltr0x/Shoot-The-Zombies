@@ -7,15 +7,14 @@ public class EnemyPassiveController : MonoBehaviour
 {
     bool isPlayerAlive;
     bool isPlayerClose;
-    float distance;
+    PlayerController player;
 
+    float distance;
     public NavMeshAgent nav;
     Animator enemyAnim;
 
     int health = 60;
     float damageRate = 0.2f;
-
-    PlayerController player;
 
     // Start is called before the first frame update
     void Start()

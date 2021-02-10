@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     float bulletForce = 30f;
+    public LineRenderer lineRenderer;
 
     public float maxHealth = 100f;
     public float currentHealth;
@@ -56,13 +57,10 @@ public class PlayerController : MonoBehaviour
             else
                 playerAnim.SetFloat("Speed", 0f);
 
-            //Aim player
+            //Aim and shoot
             FaceMouse();
-
             if (Input.GetButtonDown("Fire1") && ammo > 0)
                 Shoot();
-            else
-                Debug.Log("Reload!");
         }
     }
 
@@ -151,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        //TO-DO: Death animation & Game over screen
+        //TO-DO: Death animation
         isAlive = false;
     }
 }
