@@ -9,8 +9,11 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     Vector3 lastPosition;
 
-    private float horizontalInput;
-    private float verticalInput;
+    public DynamicJoystick moveJoystick;
+    public DynamicJoystick rotateJoystick;
+    public GameObject dynamicJoystick;
+    float horizontalInput;
+    float verticalInput;
 
     Plane plane;
     float speed = 0.08f;
@@ -40,6 +43,8 @@ public class PlayerController : MonoBehaviour
         gameManager.SetMaxHealth(maxHealth);
         ammo = 60;
         gameManager.SetAmmoCount(ammo);
+
+        dynamicJoystick.SetActive(true);
     }
 
     // Update is called once per frame
@@ -48,8 +53,8 @@ public class PlayerController : MonoBehaviour
         if (isAlive)
         {
             //Get input
-            horizontalInput = Input.GetAxisRaw("Horizontal");
-            verticalInput = Input.GetAxisRaw("Vertical");
+            horizontalInput = moveJoystick.Horizontal;
+            verticalInput = moveJoystick.Vertical;
 
             //Start animation if player is moving
             if (isMoving)
@@ -57,10 +62,8 @@ public class PlayerController : MonoBehaviour
             else
                 playerAnim.SetFloat("Speed", 0f);
 
-            //Aim and shoot
-            FaceMouse();
-            if (Input.GetButtonDown("Fire1") && ammo > 0)
-                Shoot();
+            //Aim
+            LookDirection();
         }
     }
 
@@ -98,7 +101,21 @@ public class PlayerController : MonoBehaviour
         return new Vector2(_x, _y);
     }
 
-    //To face the character towards the cursor
+    //Rotate by joystick - For mobile version
+    void LookDirection()
+    {
+        //Get input
+        float horizontal = rotateJoystick.Horizontal;
+        float vertical = rotateJoystick.Vertical;
+
+        Vector2 convertedXY = ConvertWithCamera(Camera.main.transform.position, horizontal, vertical);
+        Vector3 direction = new Vector3(convertedXY.x, 0, convertedXY.y).normalized;
+        Vector3 lookAtPosition = transform.position + direction;
+        transform.LookAt(lookAtPosition);
+
+    }
+    
+    //To face the character towards the cursor - For PC version
     void FaceMouse()
     {
         Vector3 mousePosition = Input.mousePosition;
@@ -112,13 +129,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Shoot()
+    public void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        Rigidbody rb = bullet.GetComponent<Rigidbody>();
-        rb.AddForce(firePoint.up * bulletForce, ForceMode.Impulse);
-        ammo--;
-        gameManager.SetAmmoCount(ammo);
+        if(ammo > 0)
+        {
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            rb.AddForce(firePoint.up * bulletForce, ForceMode.Impulse);
+            ammo--;
+            gameManager.SetAmmoCount(ammo);
+        }     
     }
 
     public void TakeDamage(float damage)
@@ -150,6 +170,7 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         //TO-DO: Death animation
+        dynamicJoystick.SetActive(false);
         isAlive = false;
     }
 }
